@@ -59,41 +59,54 @@ Recursively calls flattenDictionary for those values that are not an instance of
 */
 
 public class Main {
-    static HashMap<String, String> flattenDictionary(HashMap<String, Object> dict) {
-        HashMap<String, String> flat = new HashMap<>();
-        for (String k: dict.keySet()){
-            String cur = k;
-            Object V = dict.get(k);
-            if (V instanceof String){
-                flat.put(k,(String) V);
-            }
-            else {
-                HashMap<String, Object> tem = new HashMap<>();
-                for (Object s: ((HashMap) V).keySet()){
-                     tem.put(k + "." + (String)s, ((HashMap) V).get(s));
-                }
-                flat.putAll(flattenDictionary(tem));
-            }
-        }
-        return flat;
-    }
+   static HashMap<String, String> flattenDictionary(HashMap<String, Object> dict) {
+       HashMap<String, String> flat = new HashMap<>();
+       for (String k: dict.keySet()){
+           Object V = dict.get(k);
+           if (V instanceof String){
+               flat.put(k,(String) V);
+           }
+           else {
+               HashMap<String, Object> tem = new HashMap<>();
+               if (k==null || k == "") {
+                   for (Object s : ((HashMap) V).keySet()) {
+                       tem.put((String) s, ((HashMap) V).get(s));
+                  }
+                   flat.putAll(flattenDictionary(tem));
+               }
+               else{
+                   for (Object s: ((HashMap) V).keySet()) {
+                       if ((String) s == "") tem.put(k, ((HashMap) V).get(s));
+                       else {
+                           tem.put(k + "." + (String) s, ((HashMap) V).get(s));
+                       }
+                   }
+                   flat.putAll(flattenDictionary(tem));
+               }
+           }
+       }
+       return flat;
+   }
 
     public static void main(String[] args) {
+        HashMap<String, Object> d = new HashMap<String, Object>();
+        d.put("","1");
         HashMap<String, Object> c = new HashMap<String, Object>();
         c.put("d", "3");
-        c.put("e", "1");
+        c.put("e", d);
         HashMap<String, Object> key2 = new HashMap<String, Object>();
         key2.put("a", "2");
         key2.put("b", "3");
         key2.put("c", c);
-        HashMap<String, Object> dict = new HashMap<String, Object>();
-        dict.put("key1", "1");
-        dict.put("key2", key2);
-        
-        System.out.println(dict);
-        long a = System.currentTimeMillis();
-        System.out.println(flattenDictionary(dict));
-        long b = System.currentTimeMillis();
-        System.out.println("Total time elapsed: " + (b-a));
+            HashMap<String, Object> dict = new HashMap<String, Object>();
+            dict.put("key1", "1");
+            dict.put("key2", key2);
+            
+
+            System.out.println(dict);
+            long a = System.currentTimeMillis();
+            System.out.println(flattenDictionary(dict));
+            long b = System.currentTimeMillis();
+            System.out.println("Total time elapsed: " + (b-a));
     }
 }
