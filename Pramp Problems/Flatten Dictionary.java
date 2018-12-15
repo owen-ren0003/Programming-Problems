@@ -98,15 +98,15 @@ public class Main {
         key2.put("a", "2");
         key2.put("b", "3");
         key2.put("c", c);
-            HashMap<String, Object> dict = new HashMap<String, Object>();
-            dict.put("key1", "1");
-            dict.put("key2", key2);
+        HashMap<String, Object> dict = new HashMap<String, Object>();
+        dict.put("key1", "1");
+        dict.put("key2", key2);
             
 
-            System.out.println(dict);
-            long a = System.currentTimeMillis();
-            System.out.println(flattenDictionary(dict));
-            long b = System.currentTimeMillis();
-            System.out.println("Total time elapsed: " + (b-a));
+        System.out.println(dict);
+        long a = System.currentTimeMillis();
+        System.out.println(flattenDictionary(dict));
+        long b = System.currentTimeMillis();
+        System.out.println("Total time elapsed: " + (b-a));
     }
 }
