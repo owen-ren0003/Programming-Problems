@@ -42,11 +42,21 @@ public class Main {
         //starts at node 0. Find shortest path that traverses all the nodes and ends up back at 0.
         int[][] graph = {{0,10,15,20},{10,0,35,25},{15,35,0,30},{20,25,30,0}};
         int n = graph.length-1;
+        
+        //Other test cases. Uncomment to run.
         //int n = 4;
         //int[][] graph = {{0,3,5,7,9},{3,0,4,6,8},{5,4,0,2,11},{7,7,2,0,13},{9,8,11,13,0}};
 
         //int n = 4;
         //int[][] graph = {{0,2,0,6,1},{1,0,4,4,2},{5,3,0,1,5},{4,7,2,0,1},{2,6,3,6,0}};
+
+        System.out.println(Tsp(n,graph)[0].get(0));
+        System.out.println(Tsp(n,graph)[1]);
+    }
+    
+    private static List<Integer>[] Tsp(int n, int[][] graph){
+
+        List<Integer>[] minDistAndPath = new ArrayList[2];
 
         int[][] dp = new int[1 << n][n];
         int[][] path = new int[1 << n][n];
@@ -75,24 +85,28 @@ public class Main {
             }
         }
 
+
         int minPath = Integer.MAX_VALUE;
         for (int j=0; j<3; j++) {
             int cur = dp[(1 << n)-1][j] + graph[j+1][0];
             if (minPath> cur) minPath = cur;
         }
-        System.out.println(last);
-        Stack<Integer> stack = new Stack<>();
-        stack.push(0);
+
+        List<Integer> st = new ArrayList<>();
+        st.add(1);
         int curId = (1 << n) - 1;
         while (curId > 0) {
-            stack.push(last+2); //+2 because in the for loop with started with i=0, and nodes are one less than location labels
+            st.add(last+2); //+2 because in the for loop with started with i=0, and nodes are one less than location labels
             int temp = curId;
             curId -= (1 << last);
             last = path[temp][last];
         }
-        stack.push(0);
+        st.add(1);
 
-        System.out.println(minPath);
-        System.out.println(stack); //Travel starts from leftmost to rightmost location (if the adjacency matrix none symmetric).
+        minDistAndPath[0] = new ArrayList<>();
+        minDistAndPath[0].add(minPath);
+        minDistAndPath[1] = new ArrayList<>();
+        minDistAndPath[1] = st;
+        return minDistAndPath;
     }
 }
