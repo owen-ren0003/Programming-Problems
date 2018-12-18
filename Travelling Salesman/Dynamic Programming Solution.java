@@ -92,17 +92,20 @@ public class Main {
             if (minPath> cur) minPath = cur;
         }
 
-        List<Integer> st = new ArrayList<>();
-        st.add(1);
+        List<Integer> trav = new ArrayList<>();
+        trav.add(1);
         int curId = (1 << n) - 1;
         while (curId > 0) {
-            st.add(last+2); //+2 because in the for loop with started with i=0, and nodes are one less than location labels
+            trav.add(last+2); //+2 because in the for loop with started with i=0, and nodes are one less than location labels
             int temp = curId;
             curId -= (1 << last);
             last = path[temp][last];
         }
-        st.add(1);
-
+        trav.add(1);
+        
+        //To read from thel list: Travel starts from leftmost to rightmost location (if the adjacency matrix is not symmetric. 
+        //Otherwise, can be read from either direction).
+        
         minDistAndPath[0] = new ArrayList<>();
         minDistAndPath[0].add(minPath);
         minDistAndPath[1] = new ArrayList<>();
